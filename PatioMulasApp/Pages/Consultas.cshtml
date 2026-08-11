@@ -1,0 +1,136 @@
+@page
+@model PatioMulasApp.Pages.ConsultasModel
+
+@{
+    ViewData["Title"] = "Consultas";
+}
+
+<div class="container mt-4">
+
+    <div class="text-center mb-4">
+        <h1>🔎 Consultas</h1>
+        <p>Consulta de información registrada en PatioMulas.</p>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-header">
+            <h4>Filtrar movimientos</h4>
+        </div>
+
+        <div class="card-body">
+
+            <form method="get">
+
+                <div class="row align-items-end">
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            Tipo de movimiento
+                        </label>
+
+                        <select name="Tipo"
+                                class="form-select">
+
+                            <option value="">Todos</option>
+                            <option value="Entrada">Entrada</option>
+                            <option value="Salida">Salida</option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <button type="submit"
+                                class="btn btn-primary">
+
+                            🔎 Consultar
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <div class="card shadow-sm">
+
+        <div class="card-header">
+            <h4>Resultados</h4>
+        </div>
+
+        <div class="card-body">
+
+            <table class="table table-striped">
+
+                <thead>
+
+                    <tr>
+                        <th>Tipo</th>
+                        <th>Unidad</th>
+                        <th>Conductor</th>
+                        <th>Fecha y hora</th>
+                        <th>Ubicación</th>
+                        <th>Observación</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @foreach (var movimiento in Model.Movimientos)
+                    {
+                        var unidad = Model.Unidades
+                            .FirstOrDefault(u => u.Id == movimiento.UnidadId);
+
+                        var conductor = Model.Conductores
+                            .FirstOrDefault(c => c.Id == movimiento.ConductorId);
+
+                        <tr>
+
+                            <td>
+                                @movimiento.TipoMovimiento
+                            </td>
+
+                            <td>
+                                @(unidad != null ? unidad.Placa : "")
+                            </td>
+
+                            <td>
+                                @(conductor != null
+                                    ? conductor.Nombre + " " + conductor.Apellido
+                                    : "")
+                            </td>
+
+                            <td>
+                                @movimiento.FechaHora.ToString("dd/MM/yyyy HH:mm")
+                            </td>
+
+                            <td>
+                                @movimiento.UbicacionExterna
+                            </td>
+
+                            <td>
+                                @movimiento.Observacion
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
